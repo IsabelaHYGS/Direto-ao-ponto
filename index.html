@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transporte Urbano</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    
+    <section class="card config-card">
+      <h2 data-i18n="titlePasso1">1. Configuração Inicial</h2>
+      
+      <div class="form-group">
+        <label for="select-lang" data-i18n="labelLang">Idioma / Language:</label>
+        <select id="select-lang" onchange="mudarIdioma()">
+          <option value="pt">Português</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="select-perfil" data-i18n="labelPerfil">Tipo de Usuário / User Type:</label>
+        <select id="select-perfil" onchange="alternarPerfil()">
+          <option value="turista" data-i18n="optTurista">Turista / Visitante</option>
+          <option value="funcionario" data-i18n="optFuncionario">Funcionário Público</option>
+        </select>
+      </div>
+    </section>
+
+    <section id="painel-funcionario" class="card hidden">
+      <h2 data-i18n="titleAdmin">Painel do Funcionário</h2>
+      <p class="desc-text" data-i18n="descAdmin">Adicione ou atualize os dados do transporte abaixo:</p>
+
+      <div class="form-group">
+        <label data-i18n="lblNomeRua">Nome da Rua / Ponto:</label>
+        <input type="text" id="admin-rua" placeholder="Ex: Av. Central">
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="lblNomeTransp">Nome do Transporte:</label>
+        <input type="text" id="admin-transp-nome" placeholder="Ex: Linha 101 - Centro">
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="lblHorario">Horário:</label>
+        <input type="text" id="admin-transp-horario" placeholder="Ex: 10:30">
+      </div>
+
+      <div class="form-group">
+        <label data-i18n="lblAviso">Aviso de Mudanças / Observações:</label>
+        <textarea id="admin-transp-aviso" rows="2" placeholder="Ex: Rota alterada devido a obras na via."></textarea>
+      </div>
+
+      <button onclick="salvarRota()" data-i18n="btnSalvar">Adicionar / Salvar</button>
+    </section>
+
+    <section id="painel-turista" class="card">
+      <h2 data-i18n="titleTurista">Painel do Turista</h2>
+      
+      <div class="step-box">
+        <button id="btn-gps" onclick="obterLocalizacao()" data-i18n="btnGps">📍 Ativar Localização Real</button>
+        <p id="status-gps" class="status-text" data-i18n="statusGpsOff">Localização desativada.</p>
+      </div>
+
+      <div class="form-group" style="margin-top: 15px;">
+        <label for="select-destino" data-i18n="lblEscolhaDestino">Selecione para onde quer ir:</label>
+        <select id="select-destino" onchange="exibirOpcoesTransporte()">
+          <option value="" data-i18n="optSelecione">-- Escolha um destino --</option>
+        </select>
+      </div>
+
+      <div id="resultado-turista" class="hidden">
+        
+        <button id="btn-info-aviso" class="btn-info-destaque" onclick="alternarAvisos()">
+          <span data-i18n="btnTextoInformacao">ℹ️ Informações e Avisos de Mudanças</span>
+        </button>
+
+        <div id="caixa-avisos" class="alerta-box hidden">
+          <strong data-i18n="titleAvisos">⚠️ Informações Importantes:</strong>
+          <p id="texto-aviso-exibido">Nenhum aviso cadastrado para esta linha.</p>
+        </div>
+
+        <h3 data-i18n="titleOpcoes" style="margin-top: 15px;">Opções Disponíveis:</h3>
+        
+        <div class="transporte-card">
+          <span class="badge">Transporte 1</span>
+          <strong id="res-t1-nome">---</strong>
+          <span class="horario-tag" id="res-t1-horario">--:--</span>
+        </div>
+
+        <div class="transporte-card">
+          <span class="badge">Transporte 2</span>
+          <strong id="res-t2-nome">---</strong>
+          <span class="horario-tag" id="res-t2-horario">--:--</span>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
