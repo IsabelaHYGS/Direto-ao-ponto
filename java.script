@@ -1,0 +1,214 @@
+// Dicionário de Idiomas
+const traducoes = {
+  pt: {
+    titlePasso1: "1. Configuração Inicial",
+    labelLang: "Idioma / Language:",
+    labelPerfil: "Tipo de Usuário:",
+    optTurista: "Turista / Visitante",
+    optFuncionario: "Funcionário Público",
+    titleAdmin: "Painel do Funcionário",
+    descAdmin: "Adicione ou atualize os dados do transporte abaixo:",
+    lblNomeRua: "Nome da Rua / Ponto:",
+    lblNomeTransp: "Nome do Transporte:",
+    lblHorario: "Horário:",
+    lblAviso: "Aviso de Mudanças / Observações:",
+    btnSalvar: "Adicionar / Salvar",
+    titleTurista: "Painel do Turista",
+    btnGps: "📍 Ativar Localização Real",
+    statusGpsOff: "Localização desativada.",
+    lblEscolhaDestino: "Selecione para onde quer ir:",
+    optSelecione: "-- Escolha um destino --",
+    btnTextoInformacao: "ℹ️ Informações e Avisos de Mudanças",
+    titleOpcoes: "Opções Disponíveis:",
+    titleAvisos: "⚠️ Informações Importantes:",
+    semAviso: "Nenhum aviso ou mudança cadastrada para esta rota."
+  },
+  en: {
+    titlePasso1: "1. Initial Setup",
+    labelLang: "Language / Idioma:",
+    labelPerfil: "User Type:",
+    optTurista: "Tourist / Visitor",
+    optFuncionario: "Public Employee",
+    titleAdmin: "Employee Panel",
+    descAdmin: "Add or update transit data below:",
+    lblNomeRua: "Street Name / Stop:",
+    lblNomeTransp: "Transit Line Name:",
+    lblHorario: "Schedule:",
+    lblAviso: "Notice / Service Changes:",
+    btnSalvar: "Add / Save",
+    titleTurista: "Tourist Panel",
+    btnGps: "📍 Enable Live Location",
+    statusGpsOff: "Location disabled.",
+    lblEscolhaDestino: "Select your destination:",
+    optSelecione: "-- Choose a destination --",
+    btnTextoInformacao: "ℹ️ Information & Service Notices",
+    titleOpcoes: "Available Options:",
+    titleAvisos: "⚠️ Important Information:",
+    semAviso: "No service updates or notices for this route."
+  }
+};
+
+// Base de dados inicial
+let bancoDados = JSON.parse(localStorage.getItem('bancoTransportes')) || {
+  "Av. Central": [
+    { nome: "Ônibus Linha 101", horario: "10:15", aviso: "Rota com atraso de 5 min por conta de obras na av. principal." },
+    { nome: "Ônibus Linha 102 Expresso", horario: "10:40", aviso: "Linha operando normalmente." }
+  ]
+};
+
+// 1. Troca de Idioma
+function mudarIdioma() {
+  const lang = document.getElementById('select-lang').value;
+  const textos = traducoes[lang];
+
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const chave = el.getAttribute('data-i18n');
+    if (textos[chave]) {
+      if (el.tagName === 'OPTION') {
+        el.textContent = textos[chave];
+      } else {
+        el.innerText = textos[chave];
+      }
+    }
+  });
+}
+
+// 2. Alternar entre Funcionário e Turista
+function alternarPerfil() {
+  const perfil = document.getElementById('select-perfil').value;
+  const pFuncionario = document.getElementById('painel-funcionario');
+  const pTurista = document.getElementById('painel-turista');
+
+  if (perfil === 'funcionario') {
+    pFuncionario.classList.remove('hidden');
+    pTurista.classList.add('hidden');
+  } else {
+    pFuncionario.classList.add('hidden');
+    pTurista.classList.remove('hidden');
+    atualizarSelectDestinos();
+  }
+}
+
+// 3. Salvar Transporte e Avisos (Funcionário)
+function salvarRota() {
+  const rua = document.getElementById('admin-rua').value.trim();
+  const nomeTransp = document.getElementById('admin-transp-nome').value.trim();
+  const horario = document.getElementById('admin-transp-horario').value.trim();
+  const aviso = document.getElementById('admin-transp-aviso').value.trim();
+
+  if (!rua || !nomeTransp || !horario) {
+    alert("Por favor, preencha a rua, nome e horário!");
+    return;
+  }
+
+  if (!bancoDados[rua]) {
+    bancoDados[rua] = [];
+  }
+
+  bancoDados[rua].push({ nome: nomeTransp, horario: horario, aviso: aviso });
+  localStorage.setItem('bancoTransportes', JSON.stringify(bancoDados));
+
+  alert("Dados e avisos salvos com sucesso!");
+
+  // Limpa campos
+  document.getElementById('admin-rua').value = '';
+  document.getElementById('admin-transp-nome').value = '';
+  document.getElementById('admin-transp-horario').value = '';
+  document.getElementById('admin-transp-aviso').value = '';
+}
+
+// 4. Carrega lista de destinos no menu do Turista
+function atualizarSelectDestinos() {
+  const select = document.getElementById('select-destino');
+  select.innerHTML = `<option value="" data-i18n="optSelecione">-- Escolha um destino --</option>`;
+
+  Object.keys(bancoDados).forEach(rua => {
+    const opt = document.createElement('option');
+    opt.value = rua;
+    opt.textContent = rua;
+    select.appendChild(opt);
+  });
+  mudarIdioma();
+}
+
+// 5. Exibe transportes para o Turista
+function exibirOpcoesTransporte() {
+  const destino = document.getElementById('select-destino').value;
+  const painelResultado = document.getElementById('resultado-turista');
+  const caixaAvisos = document.getElementById('caixa-avisos');
+
+  caixaAvisos.classList.add('hidden');
+
+  if (!destino || !bancoDados[destino]) {
+    painelResultado.classList.add('hidden');
+    return;
+  }
+
+  const lista = bancoDados[destino];
+  const lang = document.getElementById('select-lang').value;
+  let avisosUnificados = [];
+
+  // Transporte 1
+  if (lista[0]) {
+    document.getElementById('res-t1-nome').textContent = lista[0].nome;
+    document.getElementById('res-t1-horario').textContent = lista[0].horario;
+    if (lista[0].aviso) avisosUnificados.push(`• ${lista[0].nome}: ${lista[0].aviso}`);
+  } else {
+    document.getElementById('res-t1-nome').textContent = "---";
+    document.getElementById('res-t1-horario').textContent = "--:--";
+  }
+
+  // Transporte 2
+  if (lista[1]) {
+    document.getElementById('res-t2-nome').textContent = lista[1].nome;
+    document.getElementById('res-t2-horario').textContent = lista[1].horario;
+    if (lista[1].aviso) avisosUnificados.push(`• ${lista[1].nome}: ${lista[1].aviso}`);
+  } else {
+    document.getElementById('res-t2-nome').textContent = "---";
+    document.getElementById('res-t2-horario').textContent = "--:--";
+  }
+
+  // Prepara o texto do aviso
+  const textoAvisoEl = document.getElementById('texto-aviso-exibido');
+  if (avisosUnificados.length > 0) {
+    textoAvisoEl.innerHTML = avisosUnificados.join('<br><br>');
+  } else {
+    textoAvisoEl.textContent = traducoes[lang].semAviso;
+  }
+
+  painelResultado.classList.remove('hidden');
+}
+
+// 6. Turista clica para ver/esconder a caixa de Informações e Avisos
+function alternarAvisos() {
+  const caixaAvisos = document.getElementById('caixa-avisos');
+  caixaAvisos.classList.toggle('hidden');
+}
+
+// 7. Ativar GPS
+function obterLocalizacao() {
+  const statusGps = document.getElementById('status-gps');
+
+  if (!navigator.geolocation) {
+    statusGps.textContent = "Geolocalização não suportada.";
+    return;
+  }
+
+  statusGps.textContent = "Buscando localização...";
+
+  navigator.geolocation.getCurrentPosition(
+    (posiz) => {
+      const lat = posiz.coords.latitude.toFixed(4);
+      const lng = posiz.coords.longitude.toFixed(4);
+      statusGps.textContent = `📍 Localização Ativa (${lat}, ${lng})`;
+      statusGps.style.color = "#10b981";
+    },
+    () => {
+      statusGps.textContent = "Permissão negada ou indisponível.";
+      statusGps.style.color = "#ef4444";
+    }
+  );
+}
+
+// Inicialização
+atualizarSelectDestinos();
