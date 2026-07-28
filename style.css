@@ -6,8 +6,8 @@
 }
 
 body {
-  background-color: #f4f6f9;
-  color: #333;
+  background-color: #fefce8; /* Amarelo bem claro */
+  color: #422006; /* Castanho escuro para alto contraste */
   padding: 20px;
   display: flex;
   justify-content: center;
@@ -19,19 +19,27 @@ body {
 }
 
 .card {
-  background: white;
+  background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  border: 1px solid #fef08a;
+  box-shadow: 0 4px 12px rgba(234, 179, 8, 0.12);
   margin-bottom: 20px;
 }
 
 .config-card {
-  border-top: 4px solid #2563eb;
+  border-top: 5px solid #eab308; /* Amarelo vibrante */
 }
 
 .hidden {
   display: none !important;
+}
+
+.header-admin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .form-group {
@@ -41,16 +49,35 @@ body {
   gap: 5px;
 }
 
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
 label {
   font-weight: 600;
   font-size: 0.9rem;
+  color: #713f12;
 }
 
 input, select, textarea {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1.5px solid #fde047;
   border-radius: 6px;
   font-size: 0.95rem;
+  width: 100%;
+  background-color: #fffdf0;
+  color: #422006;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #eab308;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.2);
 }
 
 textarea {
@@ -60,27 +87,89 @@ textarea {
 button {
   width: 100%;
   padding: 12px;
-  background-color: #2563eb;
-  color: white;
+  background-color: #eab308; /* Amarelo Principal */
+  color: #422006;
   border: none;
   border-radius: 6px;
   font-weight: bold;
   cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.2s;
 }
 
 button:hover {
-  background-color: #1d4ed8;
+  background-color: #ca8a04;
+  color: #ffffff;
+}
+
+.btn-secundario {
+  background-color: #fef08a;
+  color: #713f12;
+}
+
+.btn-secundario:hover {
+  background-color: #fde047;
+  color: #422006;
+}
+
+.btn-sair {
+  width: auto;
+  padding: 6px 12px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.85rem;
+}
+
+.btn-sair:hover {
+  background-color: #dc2626;
 }
 
 .desc-text, .status-text {
   font-size: 0.85rem;
-  color: #666;
+  color: #854d0e;
   margin-top: 5px;
 }
 
-/* BOTÃO DE INFORMAÇÕES E AVISOS BEM VISÍVEL */
+/* GERENCIADOR DE ROTAS */
+.lista-gerenciador {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-rota {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-radius: 6px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-info strong {
+  display: block;
+  font-size: 0.95rem;
+  color: #713f12;
+}
+
+.item-info span {
+  font-size: 0.8rem;
+  color: #a16207;
+}
+
+.btn-excluir {
+  width: auto;
+  padding: 6px 10px;
+  background-color: #ef4444;
+  color: white;
+  font-size: 0.8rem;
+}
+
+/* BOTÃO DE AVISOS DE MUDANÇA */
 .btn-info-destaque {
-  background-color: #d97706;
+  background-color: #ca8a04;
   color: white;
   margin-bottom: 10px;
   display: flex;
@@ -88,51 +177,59 @@ button:hover {
   align-items: center;
   gap: 8px;
   font-size: 0.95rem;
-  box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
 }
 
 .btn-info-destaque:hover {
-  background-color: #b45309;
+  background-color: #a16207;
 }
 
-/* CAIXA DE ALERTA DE MUDANÇAS */
+/* CAIXA DE ALERTA */
 .alerta-box {
-  background-color: #fffbeb;
-  border: 2px solid #f59e0b;
-  color: #78350f;
+  background-color: #fef9c3;
+  border: 2px solid #eab308;
+  color: #713f12;
   padding: 15px;
   border-radius: 8px;
   font-size: 0.95rem;
   margin-bottom: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-.alerta-box p {
-  margin-top: 6px;
-  line-height: 1.4;
-}
-
+/* CARTÕES DE RESULTADO DO TURISTA */
 .transporte-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: #fffdf0;
+  border: 1px solid #fef08a;
   padding: 12px;
   border-radius: 8px;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .badge {
   font-size: 0.75rem;
   font-weight: bold;
-  color: #64748b;
+  color: #a16207;
   text-transform: uppercase;
 }
 
+.info-data-horario {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.data-tag {
+  background-color: #fef08a;
+  color: #713f12;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
 .horario-tag {
-  align-self: flex-start;
-  background-color: #10b981;
+  background-color: #ca8a04;
   color: white;
   padding: 4px 8px;
   border-radius: 4px;
