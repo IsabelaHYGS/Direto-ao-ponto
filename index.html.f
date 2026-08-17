@@ -3,16 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Transporte Urbano</title>
+  <title>Transporte Urbano - Funcionário Público</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    
-    <section id="passo-1" class="card config-card">
-      <h2 data-i18n="titlePasso1">Bem-vindo / Welcome</h2>
-      
+    <section class="card config-card">
       <div class="form-group">
         <label for="select-lang" data-i18n="labelLang">Idioma / Language:</label>
         <select id="select-lang" onchange="mudarIdioma()">
@@ -21,20 +18,9 @@
           <option value="ja">日本語 (Japonês)</option>
         </select>
       </div>
-
-      <div class="form-group">
-        <label for="select-perfil" data-i18n="labelPerfil">Quem é você? / Who are you?:</label>
-        <select id="select-perfil">
-          <option value="" data-i18n="optSelecionePerfil">-- Selecione --</option>
-          <option value="turista" data-i18n="optTurista">Turista / Visitante</option>
-          <option value="funcionario" data-i18n="optFuncionario">Funcionário Público</option>
-        </select>
-      </div>
-
-      <button onclick="confirmarEntrada()" data-i18n="btnContinuar">Continuar ➔</button>
     </section>
 
-    <section id="painel-login" class="card hidden">
+    <section id="painel-login" class="card">
       <h2 data-i18n="titleLogin">Acesso do Funcionário</h2>
       
       <div class="form-group">
@@ -48,13 +34,12 @@
       </div>
 
       <button onclick="autenticarFuncionario()" data-i18n="btnEntrar">Entrar / Cadastrar Senha</button>
-      <button onclick="voltarEntrada()" class="btn-secundario" data-i18n="btnVoltar">← Voltar</button>
     </section>
 
     <section id="painel-funcionario" class="card hidden">
       <div class="header-admin">
         <h2 data-i18n="titleAdmin">Painel do Funcionário</h2>
-        <button onclick="voltarEntrada()" class="btn-sair" data-i18n="btnSair">Sair 🚪</button>
+        <button onclick="deslogar()" class="btn-sair" data-i18n="btnSair">Sair 🚪</button>
       </div>
       
       <p class="desc-text" data-i18n="descAdmin">Adicione ou atualize os dados do transporte abaixo:</p>
@@ -127,59 +112,8 @@
       <h3 data-i18n="titleRotasCriadas">Minhas Rotas Cadastradas:</h3>
       <div id="lista-rotas-admin" class="lista-gerenciador"></div>
     </section>
-
-    <section id="painel-turista" class="card hidden">
-      <div class="header-admin">
-        <h2 data-i18n="titleTurista">Painel do Turista</h2>
-        <button onclick="voltarEntrada()" class="btn-sair" data-i18n="btnInicio">← Início</button>
-      </div>
-
-      <div class="step-box">
-        <button id="btn-gps" onclick="obterLocalizacao()" data-i18n="btnGps">📍 Ativar Localização Real</button>
-        <p id="status-gps" class="status-text" data-i18n="statusGpsOff">Localização desativada.</p>
-      </div>
-
-      <div class="form-group" style="margin-top: 15px;">
-        <label for="select-destino" data-i18n="lblEscolhaDestino">Selecione para onde quer ir:</label>
-        <select id="select-destino" onchange="exibirOpcoesTransporte()">
-          <option value="" data-i18n="optSelecione">-- Escolha um destino --</option>
-        </select>
-      </div>
-
-      <div id="resultado-turista" class="hidden">
-        <button id="btn-info-aviso" class="btn-info-destaque" onclick="alternarAvisos()">
-          <span data-i18n="btnTextoInformacao">ℹ️ Informações e Avisos de Mudanças</span>
-        </button>
-
-        <div id="caixa-avisos" class="alerta-box hidden">
-          <strong data-i18n="titleAvisos">⚠️ Informações Importantes:</strong>
-          <p id="texto-aviso-exibido">Nenhum aviso cadastrado para esta linha.</p>
-        </div>
-
-        <h3 data-i18n="titleOpcoes" style="margin-top: 15px;">Opções Disponíveis:</h3>
-        
-        <div class="transporte-card">
-          <span class="badge" data-i18n="lblTransp1">Transporte 1</span>
-          <strong id="res-t1-nome">---</strong>
-          <div class="info-data-horario">
-            <span class="data-tag" id="res-t1-data">📅 --</span>
-            <span class="horario-tag" id="res-t1-horario">⏱️ --:--</span>
-          </div>
-        </div>
-
-        <div class="transporte-card">
-          <span class="badge" data-i18n="lblTransp2">Transporte 2</span>
-          <strong id="res-t2-nome">---</strong>
-          <div class="info-data-horario">
-            <span class="data-tag" id="res-t2-data">📅 --</span>
-            <span class="horario-tag" id="res-t2-horario">⏱️ --:--</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
   </div>
 
-  <script src="script.js"></script>
+  <script src="funcionario.js"></script>
 </body>
 </html>
